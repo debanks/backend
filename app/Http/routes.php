@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('api/article', ['uses' => 'ArticleController@index','middleware'=>'simpleauth']);
+Route::post('api/article', ['uses' => 'ArticleController@store','middleware'=>'simpleauth']);
