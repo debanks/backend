@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class Thread extends Authenticatable
+class Thread extends Model
 {
     /**
      * The attributes that are mass assignable.

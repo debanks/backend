@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class Subreddit extends Authenticatable
+class Subreddit extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Subreddit extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'threads', 'weight',
+        'name', 'threads', 'weight', 'syncs'
     ];
 
     /**

@@ -16,6 +16,7 @@ class CreateSubredditsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('threads');
+            $table->integer('syncs');
             $table->float('weight');
             $table->timestamps();
         });
