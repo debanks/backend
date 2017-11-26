@@ -304,6 +304,8 @@ class ContentController extends Controller {
             'thumbnail_url' => $project->image_url,
             'featured'      => $project->featured,
             'created_at'    => $project->created_at,
+            'meta_data_1'   => $project->start_date,
+            'meta_data_2'   => $project->end_date,
             'content'       => $text
         ]);
 
@@ -388,6 +390,8 @@ class ContentController extends Controller {
             'description'    => $game->description,
             'thumbnail_url'  => $game->image_url,
             'featured'       => $game->featured,
+            'meta_data_1'    => $game->release_date,
+            'meta_data_2'    => $game->score,
             'content'        => $text,
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
@@ -426,6 +430,8 @@ class ContentController extends Controller {
             'description'    => $project->description,
             'thumbnail_url'  => $project->image_url,
             'featured'       => $project->featured,
+            'meta_data_1'    => $project->start_date,
+            'meta_data_2'    => $project->end_date,
             'content'        => $text,
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
