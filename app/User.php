@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Comment extends Model
+class User extends Authenticatable
 {
     /**
      * The attributes that are mass assignable.
@@ -12,8 +12,7 @@ class Comment extends Model
      * @var array
      */
     protected $fillable = [
-        'subreddit', 'thread_id', 'comment_id', 'parent_comment_id', 'author',
-        'ups', 'downs', 'score', 'body', 'body_html', 'weight'
+        'name', 'email', 'password','profile_photo_url', 'description', 'twitter_handle'
     ];
 
     /**
@@ -22,6 +21,6 @@ class Comment extends Model
      * @var array
      */
     protected $hidden = [
-
+        'password', 'remember_token',
     ];
 }

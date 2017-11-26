@@ -7,7 +7,9 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "guzzlehttp/guzzle": "5.*"
+        "guzzlehttp/guzzle": "5.*",
+        "barryvdh/laravel-cors": "0.8.5",
+        "aws/aws-sdk-php": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

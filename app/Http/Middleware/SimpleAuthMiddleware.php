@@ -1,7 +1,7 @@
 <?php namespace App\Http\Middleware;
  
 use Closure;
- 
+use Illuminate\Support\Facades\Auth;
  
 class SimpleAuthMiddleware
 {
@@ -15,7 +15,7 @@ class SimpleAuthMiddleware
     */
    public function handle($request, Closure $next)
    {
-      return Auth::onceBasic('username') ?: $next($request);
+      return Auth::onceBasic('email') ?: $next($request);
    }
  
 }
