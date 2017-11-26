@@ -258,8 +258,7 @@ class ContentController extends Controller {
             return ['status' => false];
         }
 
-        $game          = new Game($data);
-        $game->user_id = $user->id;
+        $game = new Game($data);
         $game->save();
 
         ContentQuery::create([
@@ -294,8 +293,7 @@ class ContentController extends Controller {
             return ['status' => false];
         }
 
-        $project          = new Project($data);
-        $project->user_id = $user->id;
+        $project = new Project($data);
         $project->save();
 
         ContentQuery::create([
