@@ -226,8 +226,6 @@ class ContentController extends Controller {
         $article->save();
 
         ContentQuery::create([
-            'user_id'        => $article->user_id,
-            'user_name'      => $user->user_name,
             'type'           => 'article',
             'item_id'        => $article->id,
             'headline'       => $article->title,
@@ -265,8 +263,6 @@ class ContentController extends Controller {
         $game->save();
 
         ContentQuery::create([
-            'user_id'       => $game->user_id,
-            'user_name'     => $user->name,
             'type'          => 'game',
             'item_id'       => $game->id,
             'headline'      => $game->name,
@@ -303,8 +299,6 @@ class ContentController extends Controller {
         $project->save();
 
         ContentQuery::create([
-            'user_id'       => $project->user_id,
-            'user_name'     => $user->name,
             'type'          => 'project',
             'item_id'       => $project->id,
             'headline'      => $project->name,
