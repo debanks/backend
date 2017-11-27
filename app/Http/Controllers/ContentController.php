@@ -79,24 +79,14 @@ class ContentController extends Controller {
         ];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store() {
-
-        $article = new Article(Request::all());
-        $article->save();
-        return $article;
-    }
-
     public function programming() {
 
         $projects = Project::orderBy('end_date', 'desc')->get();
+        $content  = ContentQuery::where('tag', '=', 'Project')->whereIn('type', ['article', 'thought'])->orderBy('created_at', 'desc')->limit(8)->get();
 
         return [
-            'projects' => $projects
+            'projects' => $projects,
+            'content'  => $content
         ];
     }
 
@@ -104,7 +94,7 @@ class ContentController extends Controller {
 
         $playing = Game::where('currently_playing', '=', 1)->orderBy('release_date', 'desc')->get();
         $all     = Game::orderBy('release_date', 'desc')->get();
-        $content = ContentQuery::where('link_item_type', '=', 'game')->orderBy('created_at', 'desc')->limit(8)->get();
+        $content = ContentQuery::where('tag', '=', 'Game')->whereIn('type', ['article', 'thought'])->orderBy('created_at', 'desc')->limit(8)->get();
 
         return [
             'games'   => $all,
@@ -185,6 +175,7 @@ class ContentController extends Controller {
             'description'    => $thought->thought,
             'thumbnail_url'  => $thought->image_url,
             'featured'       => 0,
+            'tag'            => $thought->item_type ? strtoupper($thought->item_type) : "General",
             'created_at'     => $thought->created_at,
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
@@ -234,6 +225,7 @@ class ContentController extends Controller {
             'featured'       => $article->featured,
             'created_at'     => $article->created_at,
             'content'        => $text,
+            'tag'            => $article->tag,
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
             'link_item_name' => isset($data['item_name']) ? $data['item_name'] : null,
@@ -271,7 +263,8 @@ class ContentController extends Controller {
             'created_at'    => $game->created_at,
             'meta_data_1'   => $game->release_date,
             'meta_data_2'   => $game->score,
-            'content'       => $text
+            'content'       => $text,
+            'tag'           => $game->tag
         ]);
 
         return [
@@ -306,7 +299,8 @@ class ContentController extends Controller {
             'created_at'    => $project->created_at,
             'meta_data_1'   => $project->start_date,
             'meta_data_2'   => $project->end_date,
-            'content'       => $text
+            'content'       => $text,
+            'tag'           => $project->tag
         ]);
 
         return [
@@ -356,6 +350,7 @@ class ContentController extends Controller {
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
             'link_item_name' => isset($data['item_name']) ? $data['item_name'] : null,
+            'tag'            => $article->tag
         ]);
 
         return [
@@ -396,6 +391,7 @@ class ContentController extends Controller {
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
             'link_item_name' => isset($data['item_name']) ? $data['item_name'] : null,
+            'tag'            => $game->tag
         ]);
 
         return [
@@ -436,6 +432,7 @@ class ContentController extends Controller {
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
             'link_item_name' => isset($data['item_name']) ? $data['item_name'] : null,
+            'tag'            => $project->tag
         ]);
 
         return [
