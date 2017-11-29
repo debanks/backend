@@ -175,7 +175,7 @@ class ContentController extends Controller {
             'description'    => $thought->thought,
             'thumbnail_url'  => $thought->image_url,
             'featured'       => 0,
-            'tag'            => $thought->item_type ? strtoupper($thought->item_type) : "General",
+            'tag'            => isset($data['item_type']) ? strtoupper($data['item_type']) : "General",
             'created_at'     => $thought->created_at,
             'link_item_type' => isset($data['item_type']) ? $data['item_type'] : null,
             'link_item_id'   => isset($data['item_id']) ? $data['item_id'] : null,
