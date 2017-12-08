@@ -37,4 +37,9 @@ Route::group(['middleware' => ['api']], function() {
     Route::post('api/game/{id}', ['uses' => 'ContentController@updateGame', 'middleware' => 'simpleauth']);
     Route::post('api/project/{id}', ['uses' => 'ContentController@updateProject', 'middleware' => 'simpleauth']);
     Route::post('api/image', ['uses' => 'ContentController@image', 'middleware' => 'simpleauth']);
+
+    Route::get('api/memories', ['uses' => 'MemoryController@home']);
+    Route::get('api/memories/{id}', ['uses' => 'MemoryController@getMemory']);
+    Route::post('api/memories', ['uses' => 'MemoryController@insertMemory', 'middleware' => 'simpleauth']);
+    Route::post('api/memories/{id}', ['uses' => 'MemoryController@updateMemory', 'middleware' => 'simpleauth']);
 });

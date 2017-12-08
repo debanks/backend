@@ -11,37 +11,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model {
+class Memory extends Model {
 
     protected static $rules = [
-        'user_id'       => '',
-        'game'          => '',
-        'item_type'     => '',
-        'item_id'       => '',
-        'item_name'     => '',
         'title'         => '',
-        'featured'      => '',
         'summary'       => '',
         'content'       => '',
         'thumbnail_url' => '',
-        'tag'           => '',
-        'sticky'        => '',
+        'memory_date'   => '',
         'created_at'    => ''
     ];
 
     protected $fillable = [
-        'user_id',
-        'type',
         'title',
-        'featured',
         'summary',
         'content',
         'thumbnail_url',
-        'tag',
-        'sticky',
         'created_at',
-        'item_id',
-        'item_type',
-        'item_name'
+        'memory_date'
     ];
 }
