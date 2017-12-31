@@ -14,13 +14,15 @@ class Choice extends Model {
         'poll_id'     => '',
         'choice'      => '',
         'image_url'   => '',
-        'description' => ''
+        'description' => '',
+        'user_id'     => ''
     ];
 
     protected $fillable = [
         'poll_id',
         'choice',
         'image_url',
-        'description'
+        'description',
+        'user_id'
     ];
 }

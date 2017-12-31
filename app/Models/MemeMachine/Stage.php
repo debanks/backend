@@ -18,7 +18,8 @@ class Stage extends Model {
         'type'        => '',
         'status'      => '',
         'poll_id'     => '',
-        'event_id'    => ''
+        'event_id'    => '',
+        'stage_id'    => ''
     ];
 
     protected $fillable = [
@@ -29,6 +30,7 @@ class Stage extends Model {
         'type',
         'status',
         'poll_id',
-        'event_id'
+        'event_id',
+        'stage_id'
     ];
 }

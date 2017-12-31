@@ -17,6 +17,7 @@ class CreateResultsTable extends Migration
             $table->increments('id');
             $table->integer('competition_id')->index();
             $table->integer('event_id')->nullable()->index();
+            $table->integer('stage_id')->nullable()->index();
             $table->integer('user_id')->nullable()->index();
             $table->integer('score')->default(0);
             $table->mediumText('review')->nullable();

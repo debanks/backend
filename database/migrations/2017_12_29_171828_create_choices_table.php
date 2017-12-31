@@ -16,6 +16,7 @@ class CreateChoicesTable extends Migration
         Schema::create('choices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('poll_id')->index()->unsigned();
+            $table->integer('user_id')->nullable()->index()->unsigned();
             $table->string('choice');
             $table->text('image_url');
             $table->text('description');

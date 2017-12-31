@@ -2,18 +2,13 @@
 
 use App\Constants;
 use App\Http\Controllers\Controller;
-use App\Models\Game;
 use App\Models\MemeMachine\Competition;
 use App\Models\MemeMachine\Poll;
 use App\Models\MemeMachine\Event;
+use App\Models\MemeMachine\Result;
 use App\Models\MemeMachine\Stage;
-use App\Models\Memory;
-use App\Models\Project;
-use App\Models\Thought;
 use Illuminate\Http\Request;
-use App\Models\ContentQuery;
 use Illuminate\Http\Response;
-use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 use Aws\S3\S3Client;
 
@@ -22,7 +17,15 @@ class MemeMachineController extends Controller {
     public function home() {
 
         return [
-            'competitions' => Competition::orderBy('end_date', 'desc')->get(),
+            'competitions' => \DB::select(\DB::raw("
+                SELECT
+                    c.*,
+                    u.name
+                FROM competitions c
+                    LEFT JOIN users u on u.id = c.winner_user_id
+                GROUP BY c.id
+                ORDER BY c.end_date desc
+            ")),
             'polls'        => Poll::orderBy('end_date', 'desc')
         ];
     }
@@ -31,15 +34,44 @@ class MemeMachineController extends Controller {
 
         $competition = Competition::find($id);
 
-        $events = Event::where('competition_id', '=', $id)->orderBy('start_date', 'asc')->get();
+        $events  = Event::where('competition_id', '=', $id)->orderBy('start_date', 'asc')->get();
+        $results = [];
 
         foreach ($events as $event) {
-            $event->stages = Stage::where('event_id', '=', $event->id)->orderBy('start_date', 'asc')->get();
+
+            $scores = \DB::select(\DB::raw("
+                SELECT
+                    u.id as user_id,
+                    u.name as name,
+                    u.profile_image_url,
+                    u.description,
+                    r.score as score
+                FROM results r 
+                    LEFT JOIN users u on u.id = r.user_id
+                GROUP BY u.id
+                ORDER By r.score desc
+            "));
+
+            foreach ($scores as $score) {
+                if ($results[$score->user_id]) {
+                    $results[$score->user_id] = [
+                        'user_id'           => $score->user_id,
+                        'name'              => $score->name,
+                        'profile_photo_url' => $score->profile_photo_url,
+                        'score'             => 0
+                    ];
+                }
+                $results[$score->user_id] += $score->score;
+            }
+
+            $event->stages  = Stage::where('event_id', '=', $event->id)->orderBy('start_date', 'asc')->get();
+            $event->results = $scores;
         }
 
         return [
             'competition' => $competition,
-            'events'      => $events
+            'events'      => $events,
+            'results'     => $results
         ];
     }
 
@@ -70,7 +102,7 @@ class MemeMachineController extends Controller {
         $user = Auth::user();
         $data = $request->all();
 
-        $competition = Memory::find($id);
+        $competition = Competition::find($id);
 
         unset($data['htmlContent']);
 
