@@ -6,6 +6,7 @@ use App\Models\Thought;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\ContentQuery;
+use App\Models\Memory;
 
 class ArticleSeeder extends Seeder {
 
@@ -80,6 +81,29 @@ class ArticleSeeder extends Seeder {
                 'link_item_type' => $article->item_type,
                 'link_item_id'   => $article->item_id,
                 'link_item_name' => $article->item_name
+            ]);
+
+            Memory::create([
+                "title"         => $faker->words(rand(3, 8), true),
+                "thumbnail_url" => $this->images[$i % 7],
+                "summary"       => $faker->sentences(rand(3, 6), true),
+                "memory_date"   => date('Y-m-d', time() - rand(0, 700) * 60 * 60 * 24),
+                "content"       => "{
+                    \"entityMap\": {},
+                    \"blocks\": [{
+                        \"key\": \"637gr\",
+                        \"text\": \"\",
+                        \"type\": \"unstyled\",
+                        \"depth\": 0,
+                        \"inlineStyleRanges\": [{
+                            \"length\": 13,
+                            \"offset\": 0,
+                            \"style\": \"fontsize-18\"
+                        }],
+                        \"entityRanges\": [],
+                        \"data\": {}
+                    }]
+                }"
             ]);
         }
 

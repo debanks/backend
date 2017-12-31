@@ -42,4 +42,6 @@ Route::group(['middleware' => ['api']], function() {
     Route::get('api/memories/{id}', ['uses' => 'MemoryController@getMemory']);
     Route::post('api/memories', ['uses' => 'MemoryController@insertMemory', 'middleware' => 'simpleauth']);
     Route::post('api/memories/{id}', ['uses' => 'MemoryController@updateMemory', 'middleware' => 'simpleauth']);
+
+    Route::get('api/meme/home', ['uses' => 'MemeMachineController@home']);
 });
