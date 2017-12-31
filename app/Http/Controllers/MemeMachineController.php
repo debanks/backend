@@ -20,7 +20,10 @@ class MemeMachineController extends Controller {
             'competitions' => \DB::select(\DB::raw("
                 SELECT
                     c.*,
-                    u.name
+                    u.id as user_id,
+                    u.name as name,
+                    u.profile_image_url,
+                    u.description,
                 FROM competitions c
                     LEFT JOIN users u on u.id = c.winner_user_id
                 GROUP BY c.id
@@ -32,7 +35,19 @@ class MemeMachineController extends Controller {
 
     public function competition(Request $request, $id) {
 
-        $competition = Competition::find($id);
+        $competition = \DB::select(\DB::raw("
+                SELECT
+                    c.*,
+                    u.id as user_id,
+                    u.name as name,
+                    u.profile_image_url,
+                    u.description,
+                FROM competitions c
+                    LEFT JOIN users u on u.id = c.winner_user_id
+                WHERE c.id = $id
+                GROUP BY c.id
+                ORDER BY c.end_date desc
+            "));
 
         $events  = Event::where('competition_id', '=', $id)->orderBy('start_date', 'asc')->get();
         $results = [];
@@ -45,9 +60,10 @@ class MemeMachineController extends Controller {
                     u.name as name,
                     u.profile_image_url,
                     u.description,
-                    r.score as score
+                    sum(r.score) as score
                 FROM results r 
                     LEFT JOIN users u on u.id = r.user_id
+                WHERE r.event_id = $event->id
                 GROUP BY u.id
                 ORDER By r.score desc
             "));

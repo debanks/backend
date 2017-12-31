@@ -33,14 +33,14 @@ class MemeMachineSeeder extends Seeder {
 
     public function competition2016($users) {
 
-        $rand = rand(0, count($users) - 1);
+        $rand        = rand(0, count($users) - 1);
+        $fullResults = [];
 
         $competition2016 = new Competition([
-            'name'           => 'Fake Competition',
-            'description'    => 'A fake competition to see what a more complete competition looks like.',
-            'start_date'     => '2016-01-01',
-            'end_date'       => '2016-12-31',
-            'winner_user_id' => $users[$rand]['id']
+            'name'        => 'Fake Competition',
+            'description' => 'A fake competition to see what a more complete competition looks like.',
+            'start_date'  => '2016-01-01',
+            'end_date'    => '2016-12-31'
         ]);
         $competition2016->save();
 
@@ -76,7 +76,8 @@ class MemeMachineSeeder extends Seeder {
                 'score'          => $score,
                 'user_id'        => $user['id']
             ]);
-            $score += 10;
+            $fullResults[$user['id']] = $score;
+            $score                    += 10;
         }
 
         $event2 = new Event([
@@ -191,6 +192,7 @@ class MemeMachineSeeder extends Seeder {
                 'score'          => $score,
                 'user_id'        => $userId
             ]);
+            $fullResults[$userId] = $score;
         }
 
         $event3 = new Event([
@@ -225,8 +227,13 @@ class MemeMachineSeeder extends Seeder {
                 'score'          => $score,
                 'user_id'        => $user['id']
             ]);
-            $score += 10;
+            $fullResults[$user['id']] = $score;
+            $score                    += 10;
         }
+
+        arsort($fullResults);
+        $competition2016->winner_user_id = key($fullResults);
+        $competition2016->save();
     }
 
     public function competition2017($users, $ana, $david) {
