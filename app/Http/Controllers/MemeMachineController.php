@@ -23,13 +23,25 @@ class MemeMachineController extends Controller {
                     u.id as user_id,
                     u.name as user_name,
                     u.profile_photo_url,
-                    u.description
+                    u.description as user_description
                 FROM competitions c
                     LEFT JOIN users u on u.id = c.winner_user_id
                 GROUP BY c.id
                 ORDER BY c.end_date desc
             ")),
-            'polls'        => Poll::orderBy('end_date', 'desc')->get()
+            'polls'        => Poll::orderBy('end_date', 'desc')->get(),
+            'results' => \DB::select(\DB::raw("
+                SELECT
+                    u.id as user_id,
+                    u.name,
+                    u.description,
+                    u.profile_photo_url,
+                    sum(r.score) as score
+                FROM users u
+                    LEFT JOIN results r on r.user_id = u.id
+                GROUP BY u.id
+                ORDER BY score desc
+            "))
         ];
     }
 
@@ -41,7 +53,7 @@ class MemeMachineController extends Controller {
                     u.id as user_id,
                     u.name as name,
                     u.profile_photo_url,
-                    u.description
+                    u.description as user_description
                 FROM competitions c
                     LEFT JOIN users u on u.id = c.winner_user_id
                 WHERE c.id = $id
@@ -59,7 +71,7 @@ class MemeMachineController extends Controller {
                     u.id as user_id,
                     u.name as name,
                     u.profile_photo_url,
-                    u.description,
+                    u.description as user_description,
                     sum(r.score) as score
                 FROM results r 
                     LEFT JOIN users u on u.id = r.user_id

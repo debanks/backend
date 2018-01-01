@@ -323,7 +323,7 @@ class MemeMachineSeeder extends Seeder {
     public function competition2018($users) {
 
         $competition2018 = new Competition([
-            'name'           => '2nd Inaugural Competition 2017',
+            'name'           => '2nd Inaugural Competition 2018',
             'description'    => 'The second Meme Machine Competition featuring most of the group.',
             'start_date'     => '2018-01-01',
             'end_date'       => '2018-12-31',
