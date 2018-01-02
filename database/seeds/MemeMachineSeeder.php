@@ -103,10 +103,10 @@ class MemeMachineSeeder extends Seeder {
         $stage2->save();
 
         $poll = new Poll([
-            'name'        => 'What Minor event would you want?',
-            'description' => 'Pick what kind of event you would want for our second minor event during the year.',
-            'start_date'  => '2017-12-29',
-            'end_date'    => '2018-03-01',
+            'name'        => 'Who made the best picture?',
+            'description' => 'Who created the best image for this event?',
+            'start_date'  => '2016-07-01',
+            'end_date'    => '2016-07-22',
             'status'      => 'open'
         ]);
         $poll->save();
