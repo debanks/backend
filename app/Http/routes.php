@@ -12,6 +12,8 @@
 */
 Route::group(['middleware' => ['api']], function() {
     Route::get('api/home', ['uses' => 'ContentController@home']);
+    Route::get('api/fortnite', ['uses' => 'FortniteController@home']);
+    Route::post('api/fortnite', ['uses' => 'FortniteController@submit']);
     Route::get('api/header', ['uses' => 'ContentController@header']);
     Route::get('api/content', ['uses' => 'ContentController@index']);
     Route::get('api/content/{id}', ['uses' => 'ContentController@getArticle']);
