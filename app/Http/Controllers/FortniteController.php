@@ -18,7 +18,7 @@ class FortniteController extends Controller {
     public function home() {
 
         return [
-            'matches' => Match::orderBy('created_at', 'desc')->limit(50),
+            'matches' => Match::orderBy('created_at', 'desc')->limit(50)->get(),
             'stats' => \DB::select(\DB::raw("
                 SELECT
                     type,
@@ -28,6 +28,7 @@ class FortniteController extends Controller {
                     avg(place) as place,
                     SUM(IF(place = 1, 1, 0)) as wins
                 FROM matches
+                WHERE name = 'Xenerius'
                 GROUP BY 1
             "))
         ];
@@ -41,7 +42,7 @@ class FortniteController extends Controller {
 
         return [
             'status' => true,
-            'matches' => Match::orderBy('created_at', 'desc')->limit(50),
+            'matches' => Match::orderBy('created_at', 'desc')->limit(50)->get(),
             'stats' => \DB::select(\DB::raw("
                 SELECT
                     type,
@@ -51,6 +52,7 @@ class FortniteController extends Controller {
                     avg(place) as place,
                     SUM(IF(place = 1, 1, 0)) as wins
                 FROM matches
+                WHERE name = 'Xenerius'
                 GROUP BY 1
             "))
         ];
