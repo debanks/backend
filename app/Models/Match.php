@@ -11,22 +11,32 @@ use Illuminate\Database\Eloquent\Model;
 class Match extends Model {
 
     protected static $rules = [
-        'type'  => '',
-        'drop'  => '',
-        'kills' => '',
-        'path'  => '',
-        'place' => '',
-        'died'  => '',
-        'end'   => ''
+        'type'          => '',
+        'plane_start_x' => '',
+        'plane_start_y' => '',
+        'plane_end_x'   => '',
+        'plane_end_y'   => '',
+        'drop_x'        => '',
+        'drop_y'        => '',
+        'kills'         => '',
+        'place'         => '',
+        'died'          => '',
+        'end_x'         => '',
+        'end_y'         => ''
     ];
 
     protected $fillable = [
         'type',
-        'drop',
+        'drop_x',
+        'drop_y',
         'kills',
-        'path',
+        'plane_start_x',
+        'plane_start_y',
+        'plane_end_x',
+        'plane_end_y',
         'place',
         'died',
-        'end'
+        'end_x',
+        'end_y'
     ];
 }
