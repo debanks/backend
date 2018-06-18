@@ -24,7 +24,7 @@ class FortniteController extends Controller {
                     type,
                     count(*) as matches,
                     sum(kills) as kills,
-                    sum(dead) as deaths,
+                    sum(died) as deaths,
                     avg(place) as place,
                     SUM(IF(place = 1, 1, 0)) as wins
                 FROM matches
@@ -47,7 +47,7 @@ class FortniteController extends Controller {
                     type,
                     count(*) as matches,
                     sum(kills) as kills,
-                    sum(dead) as deaths,
+                    sum(died) as deaths,
                     avg(place) as place,
                     SUM(IF(place = 1, 1, 0)) as wins
                 FROM matches

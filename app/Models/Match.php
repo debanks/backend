@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class Match extends Model {
 
     protected static $rules = [
+        'name'          => '',
         'type'          => '',
         'plane_start_x' => '',
         'plane_start_y' => '',
@@ -26,6 +27,7 @@ class Match extends Model {
     ];
 
     protected $fillable = [
+        'name',
         'type',
         'drop_x',
         'drop_y',
