@@ -61,7 +61,8 @@ class FortniteController extends Controller {
 
     public function stats(Request $request) {
 
-        return FortniteUser::select(\DB::raw("
+        return [
+            'players' => FortniteUser::select(\DB::raw("
             *,
             IF(solo_matches > 0, solo_kills / solo_matches, 0) as solo_kd,
             IF(solo_matches > 0, solo_wins / solo_matches, 0) as solo_winrate,
@@ -69,7 +70,8 @@ class FortniteController extends Controller {
             IF(duo_matches > 0, duo_wins / duo_matches, 0) as duo_winrate,
             IF(squad_matches > 0, squad_kills / squad_matches, 0) as squad_kd,
             IF(squad_matches > 0, squad_wins / squad_matches, 0) as squad_winrate
-        "))->get();
+        "))->get()
+        ];
     }
 
     public function player(Request $request, $name) {
