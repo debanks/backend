@@ -93,11 +93,13 @@ class FortniteController extends Controller {
             
         "));
 
+        $player = json_decode(json_encode($player));
+
         if (count($player) == 0) {
             return ['status' => false];
         }
 
-        $player = json_decode(json_encode($player[0]));
+        $player = $player[0];
 
         $last24 = \DB::select(\DB::raw("
             SELECT
