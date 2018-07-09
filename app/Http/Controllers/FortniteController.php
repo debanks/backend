@@ -93,9 +93,11 @@ class FortniteController extends Controller {
             
         "));
 
-        if (!$player) {
+        if (count($player) == 0) {
             return ['status' => false];
         }
+
+        $player = json_decode(json_encode($player[0]));
 
         $last24 = \DB::select(\DB::raw("
             SELECT
@@ -118,7 +120,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_kills) / SUM(squad_matches), 0) as squad_kd,
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stat_diffs
-            WHERE user_id = $player->id and created_at >= NOW() - INTERVAL 24 HOUR
+            WHERE user_id = " .$player['id'] . " and created_at >= NOW() - INTERVAL 24 HOUR
         "));
 
         $lastWeek = \DB::select(\DB::raw("
@@ -142,7 +144,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_kills) / SUM(squad_matches), 0) as squad_kd,
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stat_diffs
-            WHERE user_id = $player->id and created_at >= NOW() - INTERVAL 7 DAY
+            WHERE user_id = " .$player['id'] . " and created_at >= NOW() - INTERVAL 7 DAY
         "));
 
         $charting = \DB::select(\DB::raw("
@@ -167,8 +169,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_kills) / SUM(squad_matches), 0) as squad_kd,
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stats
-            WHERE user_id = $player->id and created_at >= NOW() - INTERVAL 30 DAY
-            GROUP BY 1
+            WHERE user_id = " .$player['id'] . "
         "));
 
         return [
