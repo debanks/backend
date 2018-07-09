@@ -172,6 +172,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stat_diffs
             WHERE user_id = " .$player['id'] . "
+            GROUP BY 1
         "));
 
         return [
