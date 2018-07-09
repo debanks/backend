@@ -93,7 +93,7 @@ class FortniteController extends Controller {
             
         "));
 
-        $players = json_decode(json_encode($players), false);
+        $players = json_decode(json_encode($players), true);
 
         if (count($players) == 0) {
             return ['status' => false];
