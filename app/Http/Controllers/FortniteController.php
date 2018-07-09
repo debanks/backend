@@ -76,7 +76,7 @@ class FortniteController extends Controller {
 
     public function player(Request $request, $name) {
 
-        $player = \DB::select(\DB::raw("
+        $players = \DB::select(\DB::raw("
             SELECT
                 fs.*,
                 r1.rank as solo_rank,
@@ -93,13 +93,13 @@ class FortniteController extends Controller {
             
         "));
 
-        $player = json_decode(json_encode($player));
+        $players = json_decode(json_encode($players));
 
-        if (count($player) == 0) {
+        if (count($players) == 0) {
             return ['status' => false];
         }
 
-        $player = $player[0];
+        $player = $players[0];
 
         $last24 = \DB::select(\DB::raw("
             SELECT
