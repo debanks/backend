@@ -29,6 +29,7 @@ class CreateFortniteUsersTable extends Migration {
             $table->integer('squad_wins')->default(0);
             $table->integer('squad_kills')->default(0);
             $table->float('squad_mmr', 9, 3)->default(0.0);
+            $table->tinyInteger('collect')->default(0);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

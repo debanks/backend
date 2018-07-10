@@ -36,32 +36,11 @@ class FortniteCommand extends Command {
      */
     public function handle() {
 
-        $users = ['Xenerius', 'ItsPoptartDesu', 'MiniRR', 'yourbuttistoxic', 'Funny_Fox', 'Ninja', 'DrLupo', 'imtimthetatman'];
+        $users = FortniteUser::where('collect', '=', 1)->get();
         $auth  = Auth::login(env('FORTNITE_USER'), env('FORTNITE_PASS'));
 
-        foreach ($users as $name) {
-            $stats = $auth->profile->stats->lookup($name);
-
-            $existing = FortniteUser::where('name', '=', $name)->first();
-            if (!$existing) {
-                $existing = new FortniteUser([
-                    'name'          => $name,
-                    'solo_matches'  => $stats->pc->solo->matches_played,
-                    'solo_wins'     => $stats->pc->solo->wins,
-                    'solo_kills'    => $stats->pc->solo->kills,
-                    'duo_matches'   => $stats->pc->duo->matches_played,
-                    'duo_wins'      => $stats->pc->duo->wins,
-                    'duo_kills'     => $stats->pc->duo->kills,
-                    'squad_matches' => $stats->pc->squad->matches_played,
-                    'squad_wins'    => $stats->pc->squad->wins,
-                    'squad_kills'   => $stats->pc->squad->kills
-                ]);
-
-                $existing->solo_mmr  = $this->calculateMMR($existing, 'solo');
-                $existing->duo_mmr   = $this->calculateMMR($existing, 'duo');
-                $existing->squad_mmr = $this->calculateMMR($existing, 'squad');
-                $existing->save();
-            }
+        foreach ($users as $existing) {
+            $stats = $auth->profile->stats->lookup($existing->name);
 
             $new = new FortniteStat([
                 'user_id'       => $existing->id,
@@ -115,7 +94,7 @@ class FortniteCommand extends Command {
 
     }
 
-    private function calculateMMR($stat, $type) {
+    public static function calculateMMR($stat, $type) {
 
         $killPoints         = 6500;
         $winPoints          = 3500;

@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Console\Commands\FortniteCommand;
 use App\Constants;
 use App\Http\Controllers\Controller;
 use App\Models\Fortnite\FortniteUser;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Aws\S3\S3Client;
+use Fortnite\Auth as FnAuth;
 
 class FortniteController extends Controller {
 
@@ -56,6 +58,45 @@ class FortniteController extends Controller {
                 WHERE name = 'Xenerius'
                 GROUP BY 1
             "))
+        ];
+    }
+
+    public function addPlayer(Request $request, $name) {
+
+        $player = FortniteUser::where('name', '=', $name)->first();
+
+        if ($player) {
+            return [
+                'status' => -1,
+                'player' => $player
+            ];
+        }
+
+        $auth = FnAuth::login(env('FORTNITE_USER'), env('FORTNITE_PASS'));
+
+        $stats    = $auth->profile->stats->lookup($name);
+        $existing = new FortniteUser([
+            'name'          => $name,
+            'solo_matches'  => $stats->pc->solo->matches_played,
+            'solo_wins'     => $stats->pc->solo->wins,
+            'solo_kills'    => $stats->pc->solo->kills,
+            'duo_matches'   => $stats->pc->duo->matches_played,
+            'duo_wins'      => $stats->pc->duo->wins,
+            'duo_kills'     => $stats->pc->duo->kills,
+            'squad_matches' => $stats->pc->squad->matches_played,
+            'squad_wins'    => $stats->pc->squad->wins,
+            'squad_kills'   => $stats->pc->squad->kills,
+            'collect'       => 1
+        ]);
+
+        $existing->solo_mmr  = FortniteCommand::calculateMMR($existing, 'solo');
+        $existing->duo_mmr   = FortniteCommand::calculateMMR($existing, 'duo');
+        $existing->squad_mmr = FortniteCommand::calculateMMR($existing, 'squad');
+        $existing->save();
+
+        return [
+            'status' => 1,
+            'player' => $existing
         ];
     }
 
@@ -134,7 +175,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_kills) / SUM(squad_matches), 0) as squad_kd,
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stat_diffs
-            WHERE user_id = " .$player['id'] . " and created_at >= NOW() - INTERVAL 24 HOUR
+            WHERE user_id = " . $player['id'] . " and created_at >= NOW() - INTERVAL 24 HOUR
         "));
 
         $lastWeek = \DB::select(\DB::raw("
@@ -158,7 +199,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_kills) / SUM(squad_matches), 0) as squad_kd,
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stat_diffs
-            WHERE user_id = " .$player['id'] . " and created_at >= NOW() - INTERVAL 7 DAY
+            WHERE user_id = " . $player['id'] . " and created_at >= NOW() - INTERVAL 7 DAY
         "));
 
         $charting = \DB::select(\DB::raw("
@@ -183,7 +224,7 @@ class FortniteController extends Controller {
                 IF(SUM(squad_matches) > 0, SUM(squad_kills) / SUM(squad_matches), 0) as squad_kd,
                 IF(SUM(squad_matches) > 0, SUM(squad_wins) / SUM(squad_matches), 0) as squad_winrate
             FROM fortnite_stat_diffs
-            WHERE user_id = " .$player['id'] . "
+            WHERE user_id = " . $player['id'] . "
             GROUP BY 1
         "));
 
