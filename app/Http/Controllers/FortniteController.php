@@ -232,7 +232,8 @@ class FortniteController extends Controller {
             'overall'  => $player,
             'last24'   => $last24,
             'lastWeek' => $lastWeek,
-            'charting' => $charting
+            'charting' => $charting,
+            'ranks'    => \DB::table('ranks')->get()
         ];
     }
 }
