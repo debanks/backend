@@ -119,9 +119,9 @@ class FortniteController extends Controller {
                     r3.rank as squad_rank,
                     r3.image as squad_rank_image
                 FROM fortnite_users as fs
-                    LEFT JOIN ranks r1 on fs.solo_mmr >= r1.mmr_start and fs.solo_mmr <= r1.mmr_end
-                    LEFT JOIN ranks r2 on fs.duo_mmr >= r2.mmr_start and fs.duo_mmr <= r2.mmr_end
-                    LEFT JOIN ranks r3 on fs.squad_mmr >= r3.mmr_start and fs.squad_mmr <= r3.mmr_end
+                    LEFT JOIN ranks r1 on fs.solo_mmr >= r1.mmr_start and fs.solo_mmr < r1.mmr_end
+                    LEFT JOIN ranks r2 on fs.duo_mmr >= r2.mmr_start and fs.duo_mmr < r2.mmr_end
+                    LEFT JOIN ranks r3 on fs.squad_mmr >= r3.mmr_start and fs.squad_mmr < r3.mmr_end
                 GROUP BY fs.id
             "))
         ];
@@ -139,9 +139,9 @@ class FortniteController extends Controller {
                 r3.rank as squad_rank,
                 r3.image as squad_rank_image
             FROM fortnite_users as fs
-                LEFT JOIN ranks r1 on fs.solo_mmr >= r1.mmr_start and fs.solo_mmr <= r1.mmr_end
-                LEFT JOIN ranks r2 on fs.duo_mmr >= r2.mmr_start and fs.duo_mmr <= r2.mmr_end
-                LEFT JOIN ranks r3 on fs.squad_mmr >= r3.mmr_start and fs.squad_mmr <= r3.mmr_end
+                LEFT JOIN ranks r1 on fs.solo_mmr >= r1.mmr_start and fs.solo_mmr < r1.mmr_end
+                LEFT JOIN ranks r2 on fs.duo_mmr >= r2.mmr_start and fs.duo_mmr < r2.mmr_end
+                LEFT JOIN ranks r3 on fs.squad_mmr >= r3.mmr_start and fs.squad_mmr < r3.mmr_end
             WHERE fs.name = '$name'
             
         "));
