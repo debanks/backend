@@ -52,7 +52,10 @@ class FortniteCommand extends Command {
                 'duo_kills'     => $stats->pc->duo->kills,
                 'squad_matches' => $stats->pc->squad->matches_played,
                 'squad_wins'    => $stats->pc->squad->wins,
-                'squad_kills'   => $stats->pc->squad->kills
+                'squad_kills'   => $stats->pc->squad->kills,
+                'solo_score'    => $stats->pc->solo->score,
+                'duo_score'     => $stats->pc->duo->score,
+                'squad_score'   => $stats->pc->squad->score
             ]);
 
             $new->solo_mmr  = $this->calculateMMR($new, 'solo');
@@ -73,7 +76,10 @@ class FortniteCommand extends Command {
                 'squad_kills'   => $stats->pc->squad->kills - $existing->squad_kills,
                 'solo_mmr'      => $new->solo_mmr - $existing->solo_mmr,
                 'duo_mmr'       => $new->duo_mmr - $existing->duo_mmr,
-                'squad_mmr'     => $new->squad_mmr - $existing->squad_mmr
+                'squad_mmr'     => $new->squad_mmr - $existing->squad_mmr,
+                'solo_score'    => $stats->pc->solo->score - $existing->solo_score,
+                'duo_score'     => $stats->pc->duo->score - $existing->duo_score,
+                'squad_score'   => $stats->pc->squad->score - $existing->squad_score
             ]);
             $diff->save();
 
@@ -86,6 +92,9 @@ class FortniteCommand extends Command {
             $existing->squad_matches = $stats->pc->squad->matches_played;
             $existing->squad_wins    = $stats->pc->squad->wins;
             $existing->squad_kills   = $stats->pc->squad->kills;
+            $existing->solo_score    = $stats->pc->solo->score;
+            $existing->duo_score     = $stats->pc->duo->score;
+            $existing->squad_score   = $stats->pc->squad->score;
             $existing->solo_mmr      = $this->calculateMMR($existing, 'solo');
             $existing->duo_mmr       = $this->calculateMMR($existing, 'duo');
             $existing->squad_mmr     = $this->calculateMMR($existing, 'squad');

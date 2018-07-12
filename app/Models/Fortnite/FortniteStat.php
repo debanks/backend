@@ -12,6 +12,7 @@ class FortniteStat extends Model {
 
     protected $fillable = [
         'user_id', 'solo_matches', 'solo_wins', 'solo_kills', 'duo_matches', 'duo_wins', 'duo_kills',
-        'squad_matches', 'squad_wins', 'squad_kills', 'solo_mmr', 'duo_mmr', 'squad_mmr'
+        'squad_matches', 'squad_wins', 'squad_kills', 'solo_mmr', 'duo_mmr', 'squad_mmr', 'solo_score',
+        'duo_score', 'squad_score'
     ];
 }
