@@ -17,6 +17,7 @@ Route::group(['middleware' => ['api']], function() {
     Route::get('api/stats', ['uses' => 'FortniteController@stats']);
     Route::get('api/stats/{name}', ['uses' => 'FortniteController@player']);
     Route::get('api/add/{name}', ['uses' => 'FortniteController@addPlayer']);
+    Route::get('api/check/{name}', ['uses' => 'FortniteController@checkPlayer']);
     Route::get('api/header', ['uses' => 'ContentController@header']);
     Route::get('api/content', ['uses' => 'ContentController@index']);
     Route::get('api/content/{id}', ['uses' => 'ContentController@getArticle']);

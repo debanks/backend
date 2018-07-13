@@ -61,6 +61,16 @@ class FortniteController extends Controller {
         ];
     }
 
+    public function checkPlayer(Request $request, $name) {
+
+        $auth  = FnAuth::login(env('FORTNITE_USER'), env('FORTNITE_PASS'));
+        $stats = $auth->profile->stats->lookup($name);
+
+        return [
+            'stats' => $stats
+        ];
+    }
+
     public function addPlayer(Request $request, $name) {
 
         $player = FortniteUser::where('name', '=', $name)->first();
