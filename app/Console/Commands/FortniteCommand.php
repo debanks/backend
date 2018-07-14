@@ -135,6 +135,6 @@ class FortniteCommand extends Command {
         $firstScore  = min(1, $score / 500) * 0.95;
         $secondScore = $score > 500 ? ($score - 500) / 2000 * 0.05 : 0;
 
-        return ($firstKill + $secondKill + $thirdKill + $fourthKill) * $killPoints + ($firstScore * $secondScore) * $scorePoints;
+        return ($firstKill + $secondKill + $thirdKill + $fourthKill) * $killPoints + ($firstScore + $secondScore) * $scorePoints;
     }
 }
