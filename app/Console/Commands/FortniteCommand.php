@@ -105,56 +105,36 @@ class FortniteCommand extends Command {
 
     public static function calculateMMR($stat, $type) {
 
-        $killPoints         = 6500;
-        $winPoints          = 3500;
-        $expectedWinPercent = 0.04;
-        $secondTierWin      = 0.12;
-        $thirdTierWin       = 0.25;
+        $killPoints  = 5000;
+        $scorePoints = 5000;
 
         if ($type == 'solo') {
-            $killPoints         = 4000;
-            $winPoints          = 6000;
-            $expectedWinPercent = 0.01;
-            $secondTierWin      = 0.15;
-            $thirdTierWin       = 0.35;
-            $kd                 = $stat->solo_matches > 0 ? $stat->solo_kills / $stat->solo_matches : 0;
-            $winRate            = $stat->solo_matches > 0 ? $stat->solo_wins / $stat->solo_matches : 0;
+            $kd    = $stat->solo_matches > 0 ? $stat->solo_kills / $stat->solo_matches : 0;
+            $score = $stat->solo_matches > 0 ? $stat->solo_score / $stat->solo_matches : 0;
         } else if ($type == 'duo') {
-            $killPoints         = 5000;
-            $winPoints          = 5000;
-            $expectedWinPercent = 0.02;
-            $secondTierWin      = 0.12;
-            $thirdTierWin       = 0.3;
-            $kd                 = $stat->duo_matches > 0 ? $stat->duo_kills / $stat->duo_matches : 0;
-            $winRate            = $stat->duo_matches > 0 ? $stat->duo_wins / $stat->duo_matches : 0;
+            $kd    = $stat->duo_matches > 0 ? $stat->duo_kills / $stat->duo_matches : 0;
+            $score = $stat->duo_matches > 0 ? $stat->duo_score / $stat->duo_matches : 0;
         } else {
-            $kd      = $stat->squad_matches > 0 ? $stat->squad_kills / $stat->squad_matches : 0;
-            $winRate = $stat->squad_matches > 0 ? $stat->squad_wins / $stat->squad_matches : 0;
+            $kd    = $stat->squad_matches > 0 ? $stat->squad_kills / $stat->squad_matches : 0;
+            $score = $stat->squad_matches > 0 ? $stat->squad_score / $stat->squad_matches : 0;
         }
 
         $firstKill  = $kd / 1 * 0.3;
         $firstKill  = $firstKill > 0.3 ? 0.3 : $firstKill;
         $firstKill  = $firstKill < 0 ? 0 : $firstKill;
-        $secondKill = ($kd - 1) / 9 * 0.45;
+        $secondKill = ($kd - 1) / 4 * 0.45;
         $secondKill = $secondKill > 0.45 ? 0.45 : $secondKill;
         $secondKill = $secondKill < 0 ? 0 : $secondKill;
-        $thirdKill  = ($kd - 10) / 90 * 0.25;
-        $thirdKill  = $thirdKill > 0.25 ? 0.25 : $thirdKill;
+        $thirdKill  = ($kd - 5) / 5 * 0.20;
+        $thirdKill  = $thirdKill > 0.20 ? 0.20 : $thirdKill;
         $thirdKill  = $thirdKill < 0 ? 0 : $thirdKill;
+        $fourthKill = ($kd - 10) / 90 * 0.05;
+        $fourthKill = $fourthKill > 0.05 ? 0.05 : $fourthKill;
+        $fourthKill = $fourthKill < 0 ? 0 : $fourthKill;
 
-        $firstWin  = $winRate / $expectedWinPercent * 0.2;
-        $firstWin  = $firstWin > 0.2 ? 0.2 : $firstWin;
-        $firstWin  = $firstWin < 0 ? 0 : $firstWin;
-        $secondWin = ($winRate - $expectedWinPercent) / ($secondTierWin - $expectedWinPercent) * 0.5;
-        $secondWin = $secondWin > 0.5 ? 0.5 : $secondWin;
-        $secondWin = $secondWin < 0 ? 0 : $secondWin;
-        $thirdWin  = ($winRate - $secondTierWin) / ($thirdTierWin - $secondTierWin) * 0.2;
-        $thirdWin  = $thirdWin > 0.2 ? 0.2 : $thirdWin;
-        $thirdWin  = $thirdWin < 0 ? 0 : $thirdWin;
-        $fourthWin = ($winRate - $thirdTierWin) / (1 - $thirdTierWin) * 0.1;
-        $fourthWin = $fourthWin > 0.1 ? 0.1 : $fourthWin;
-        $fourthWin = $fourthWin < 0 ? 0 : $fourthWin;
+        $firstScore  = min(1, $score / 500) * 0.95;
+        $secondScore = $score > 500 ? ($score - 500) / 2000 * 0.05 : 0;
 
-        return ($firstKill + $secondKill + $thirdKill) * $killPoints + ($firstWin + $secondWin + $thirdWin + $fourthWin) * $winPoints;
+        return ($firstKill + $secondKill + $thirdKill + $fourthKill) * $killPoints + ($firstScore * $secondScore) * $scorePoints;
     }
 }
